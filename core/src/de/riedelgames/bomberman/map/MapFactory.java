@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 
 import de.riedelgames.bomberman.GameConstants;
 import de.riedelgames.bomberman.map.objects.ObjectFactory;
+import de.riedelgames.bomberman.screens.GameScreen;
 
 /**
  * Factory that creates a new map based on world width and height.
@@ -33,6 +36,12 @@ public class MapFactory {
      * 
      */
     public void createMap() {
+        // TODO : Move player creation outside
+        objectFactory.createPlayer(GameConstants.WORLD_WIDTH - 2, 1, "2");
+        objectFactory.createPlayer(1, GameConstants.WORLD_HEIGHT - 2, "1");
+        objectFactory.createPlayer((GameConstants.WORLD_WIDTH - 1) / 2 + 1,
+                (GameConstants.WORLD_HEIGHT - 1) / 2 + 1, "3");
+
         createWalls();
         createInnerGrid();
         placeDestructableBlocks();
@@ -76,16 +85,7 @@ public class MapFactory {
     private void placeDestructableBlocks() {
         List<Integer[]> usedFields = new ArrayList<Integer[]>();
 
-        // TODO : Implement for multiple players.
-        usedFields.add(new Integer[] {1, 1});
-        usedFields.add(new Integer[] {2, 1});
-        usedFields.add(new Integer[] {1, 2});
-        usedFields
-                .add(new Integer[] {GameConstants.WORLD_WIDTH - 2, GameConstants.WORLD_HEIGHT - 2});
-        usedFields
-                .add(new Integer[] {GameConstants.WORLD_WIDTH - 2, GameConstants.WORLD_HEIGHT - 3});
-        usedFields
-                .add(new Integer[] {GameConstants.WORLD_WIDTH - 3, GameConstants.WORLD_HEIGHT - 2});
+        addFreeFieldsAroundPlayers(usedFields);
 
         int reservedFields = usedFields.size();
 
@@ -98,7 +98,7 @@ public class MapFactory {
         while (usedFields.size() - reservedFields < numberOfWantedFields) {
             int posX = randomGenerator.nextInt(GameConstants.WORLD_WIDTH - 2) + 1;
             int posY = randomGenerator.nextInt(GameConstants.WORLD_HEIGHT - 2) + 1;
-            if (posX % 2 == 0 && posY % 2 == 0) {
+            if (!isInnerFieldNotOnGrid(posX, posY)) {
                 continue;
             }
             Integer[] position = new Integer[] {posX, posY};
@@ -135,6 +135,38 @@ public class MapFactory {
     /** This class should be private. */
     private MapFactory() {
         objectFactory = ObjectFactory.getInstance();
+    }
+
+    private boolean isInnerFieldNotOnGrid(int posX, int posY) {
+        if (posX % 2 == 0 && posY % 2 == 0) {
+            return false;
+        } else if ((posX == 0 || posX == GameConstants.WORLD_WIDTH || posY == 0
+                || posY == GameConstants.WORLD_HEIGHT)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void addFreeFieldsAroundPlayers(List<Integer[]> usedFields) {
+        Array<Body> bodies = new Array<Body>();
+
+        GameScreen.world.getBodies(bodies);
+
+        for (Body body : bodies) {
+            String id = (String) body.getUserData();
+            if (id.startsWith(GameConstants.PLAYER_ID_PREFIX)) {
+                int posX = (int) (body.getPosition().x - 0.5f);
+                int posY = (int) (body.getPosition().y - 0.5f);
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++) {
+                        if (isInnerFieldNotOnGrid(posX + i, posY + j)) {
+                            usedFields.add(new Integer[] {posX + i, posY + j});
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

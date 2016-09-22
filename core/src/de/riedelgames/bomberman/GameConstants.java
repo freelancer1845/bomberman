@@ -10,6 +10,9 @@ public class GameConstants {
     /** Destructible block. */
     public static final String DESTRUCTIBLE_BLOCK_ID = "DesctructableBlock";
 
+    /** Player id prefix. */
+    public static final String PLAYER_ID_PREFIX = "PlayerId-";
+
 
     /** From here on the gameConstants are settings to be set. */
 

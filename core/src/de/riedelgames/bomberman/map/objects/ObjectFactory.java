@@ -20,6 +20,7 @@ public class ObjectFactory {
 
     private static ObjectFactory instance = null;
 
+
     /**
      * Creates a solid block in the world.
      * 
@@ -50,6 +51,13 @@ public class ObjectFactory {
         createBlock(xGridPosition, yGridPosition, 1, 1, GameConstants.DESTRUCTIBLE_BLOCK_ID);
     }
 
+    /**
+     * Creates a player object with a given id.
+     */
+    public void createPlayer(int xGridPosition, int yGridPosition, String id) {
+        createPlayerObject(xGridPosition, yGridPosition, GameConstants.PLAYER_ID_PREFIX + id);
+    }
+
 
     /**
      * Returns the instance.
@@ -77,7 +85,6 @@ public class ObjectFactory {
 
         PolygonShape polygonShape = new PolygonShape();
         polygonShape.setAsBox(xBlocks / 2.0f, yBlocks / 2.0f);
-        // polygonShape.setAsBox(xBlocks, yBlocks, new Vector2(xBlocks, yBlocks), 0);
 
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -87,6 +94,24 @@ public class ObjectFactory {
         body.setUserData(id);
 
 
+    }
+
+    private void createPlayerObject(int xGridPosition, int yGridPosition, String id) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);
+
+        Body body;
+        body = GameScreen.world.createBody(bodyDef);
+
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(0.4f, 0.4f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+
+        body.createFixture(fixtureDef);
+        body.setUserData(id);
     }
 
 
