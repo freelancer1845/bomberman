@@ -137,20 +137,6 @@ public class MapFactory {
         objectFactory = ObjectFactory.getInstance();
     }
 
-    /**
-     * TODO : Do it the right way....
-     */
-    private int calculateFieldsWhereBothCoordinatesAreUneven() {
-        int count = 0;
-        for (int i = 0; i < GameConstants.WORLD_WIDTH; i++) {
-            for (int j = 0; j < GameConstants.WORLD_HEIGHT; j++) {
-                if (i % 2 == 1 && j % 2 == 1) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
 
 
 }

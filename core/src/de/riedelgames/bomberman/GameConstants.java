@@ -11,7 +11,7 @@ public class GameConstants {
     public static final String DESTRUCTIBLE_BLOCK_ID = "DesctructableBlock";
 
 
-    /** From here on the gameConstants are settings to be set */
+    /** From here on the gameConstants are settings to be set. */
 
     /** Game world width. */
     public static final int WORLD_WIDTH = 17;
