@@ -91,7 +91,7 @@ public class MapFactory {
 
         int numberOfWantedFields =
                 Math.round((fieldsInInnerField - fieldsUsedByInnerGrid - usedFields.size())
-                        * GameConstants.DESTRUCTABLE_BLOCKS_PERCENTAGE);
+                        * GameConstants.DESTRUCTIBLE_BLOCKS_PERCENTAGE);
 
         Random randomGenerator = new Random();
 
@@ -112,7 +112,7 @@ public class MapFactory {
             if (usedPosition) {
                 continue;
             }
-            objectFactory.createDestructableBlock(posX, posY);
+            objectFactory.createDestructibleBlock(posX, posY);
             usedFields.add(position);
             System.out.println("Block Created: [" + posX + "] [" + posY + "]");
         }

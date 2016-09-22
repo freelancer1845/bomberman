@@ -22,8 +22,8 @@ public class GameConstants {
     /** Game world height. */
     public static final int WORLD_HEIGHT = 17;
 
-    /** Percentage blocked with destructable blocks. */
-    public static final float DESTRUCTABLE_BLOCKS_PERCENTAGE = 0.5f;
+    /** Percentage blocked with destructible blocks. */
+    public static final float DESTRUCTIBLE_BLOCKS_PERCENTAGE = 0.5f;
 
     private GameConstants() {}
 }

@@ -45,9 +45,9 @@ public class ObjectFactory {
     }
 
     /**
-     * Creates a destructable block in the world.
+     * Creates a destructible block in the world.
      */
-    public void createDestructableBlock(int xGridPosition, int yGridPosition) {
+    public void createDestructibleBlock(int xGridPosition, int yGridPosition) {
         createBlock(xGridPosition, yGridPosition, 1, 1, GameConstants.DESTRUCTIBLE_BLOCK_ID);
     }
 
