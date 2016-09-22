@@ -82,6 +82,7 @@ public class ObjectFactory {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
+        fixtureDef.isSensor = true;
 
         body.createFixture(fixtureDef);
         body.setUserData(GameConstants.BOMB_ID);

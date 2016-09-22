@@ -151,8 +151,8 @@ public class GameScreen implements Screen, InputProcessor {
         } else if (keycode == Input.Keys.LEFT) {
             playerBody.setLinearVelocity(-1, 0);
         } else if (keycode == Input.Keys.SPACE) {
-            ObjectFactory.getInstance().createBomb(Math.round(playerBody.getPosition().x),
-                    Math.round(playerBody.getPosition().y), 1000);
+            ObjectFactory.getInstance().createBomb(Math.round(playerBody.getPosition().x - 0.5f),
+                    Math.round(playerBody.getPosition().y - 0.5f), 1000);
         }
         return true;
     }
