@@ -2,8 +2,11 @@ package de.riedelgames.bomberman.map.objects;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 import de.riedelgames.bomberman.GameConstants;
 import de.riedelgames.bomberman.screens.GameScreen;
@@ -58,6 +61,42 @@ public class ObjectFactory {
         createPlayerObject(xGridPosition, yGridPosition, GameConstants.PLAYER_ID_PREFIX + id);
     }
 
+    /**
+     * Creates a Bomb that will explode after the given time.
+     * 
+     * @param xGridPosition
+     * @param yGridPosition
+     * @param id
+     * @param clock Time to explosion in ms.
+     */
+    public void createBomb(int xGridPosition, int yGridPosition, int clock) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);
+
+        final Body body;
+        body = GameScreen.world.createBody(bodyDef);
+
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(0.45f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+
+        body.createFixture(fixtureDef);
+        body.setUserData(GameConstants.BOMB_ID);
+
+        Timer.instance().scheduleTask(new Task() {
+
+            @Override
+            public void run() {
+                GameScreen.world.destroyBody(body);
+            }
+
+        }, clock / 1000.0f);
+
+    }
+
 
     /**
      * Returns the instance.
@@ -104,11 +143,11 @@ public class ObjectFactory {
         Body body;
         body = GameScreen.world.createBody(bodyDef);
 
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(0.4f, 0.4f);
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(0.45f);
 
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = polygonShape;
+        fixtureDef.shape = circleShape;
 
         body.createFixture(fixtureDef);
         body.setUserData(id);

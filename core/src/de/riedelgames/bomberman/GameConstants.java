@@ -13,6 +13,9 @@ public class GameConstants {
     /** Player id prefix. */
     public static final String PLAYER_ID_PREFIX = "PlayerId-";
 
+    /** Bomb id. */
+    public static final String BOMB_ID = "BombId";
+
 
     /** From here on the gameConstants are settings to be set. */
 
