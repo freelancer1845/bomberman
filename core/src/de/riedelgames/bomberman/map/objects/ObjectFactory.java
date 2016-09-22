@@ -1,6 +1,5 @@
 package de.riedelgames.bomberman.map.objects;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -70,14 +69,15 @@ public class ObjectFactory {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(xGridPosition, yGridPosition);
+        bodyDef.position.set(xGridPosition + xBlocks / 2.0f, yGridPosition + yBlocks / 2.0f);
 
 
         Body body;
         body = GameScreen.world.createBody(bodyDef);
 
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(xBlocks, yBlocks, new Vector2(xBlocks, yBlocks), 0);
+        polygonShape.setAsBox(xBlocks / 2.0f, yBlocks / 2.0f);
+        // polygonShape.setAsBox(xBlocks, yBlocks, new Vector2(xBlocks, yBlocks), 0);
 
 
         FixtureDef fixtureDef = new FixtureDef();
