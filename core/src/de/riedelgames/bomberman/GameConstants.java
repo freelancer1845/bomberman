@@ -20,7 +20,7 @@ public class GameConstants {
     public static final int WORLD_HEIGHT = 17;
 
     /** Percentage blocked with destructable blocks. */
-    public static final float DESTRUCTABLE_BLOCKS_PERCENTAGE = 1f;
+    public static final float DESTRUCTABLE_BLOCKS_PERCENTAGE = 0.5f;
 
     private GameConstants() {}
 }

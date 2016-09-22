@@ -23,6 +23,10 @@ public class MapFactory {
 
     private ObjectFactory objectFactory;
 
+    private int fieldsUsedByInnerGrid = 0;
+
+    private int fieldsInInnerField = 0;
+
 
     /**
      * Create a random game map.
@@ -50,14 +54,18 @@ public class MapFactory {
         objectFactory.createSolidStack(1, GameConstants.WORLD_HEIGHT - 1,
                 GameConstants.WORLD_WIDTH - 2, 1);
 
+        fieldsInInnerField = (GameConstants.WORLD_WIDTH - 2) * (GameConstants.WORLD_HEIGHT - 2);
+
     }
 
 
     private void createInnerGrid() {
 
+        fieldsUsedByInnerGrid = 0;
         for (int i = 2; i < GameConstants.WORLD_HEIGHT - 1; i += 2) {
             for (int j = 2; j < GameConstants.WORLD_WIDTH - 1; j += 2) {
                 objectFactory.createSolidBlock(j, i);
+                fieldsUsedByInnerGrid++;
             }
         }
 
@@ -81,12 +89,10 @@ public class MapFactory {
 
         int reservedFields = usedFields.size();
 
-        int numberOfPossibleFields =
-                ((GameConstants.WORLD_WIDTH - 1) / 2 * (GameConstants.WORLD_HEIGHT - 1) / 2);
-
-
         int numberOfWantedFields =
-                Math.round(numberOfPossibleFields * GameConstants.DESTRUCTABLE_BLOCKS_PERCENTAGE);
+                Math.round((fieldsInInnerField - fieldsUsedByInnerGrid - usedFields.size())
+                        * GameConstants.DESTRUCTABLE_BLOCKS_PERCENTAGE);
+
         Random randomGenerator = new Random();
 
         while (usedFields.size() - reservedFields < numberOfWantedFields) {
