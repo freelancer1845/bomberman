@@ -168,12 +168,33 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE) {
             playersRegistry.getPlayer("FIRST_PLAYER").plantBomb();
+            return true;
+        } else if (keycode == Input.Keys.SHIFT_LEFT) {
+            playersRegistry.getPlayer("SECOND_PLAYER").plantBomb();
+            return true;
+        } else if (keycode == Input.Keys.W) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").addDirection(Input.Keys.UP);
+        } else if (keycode == Input.Keys.S) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").addDirection(Input.Keys.DOWN);
+        } else if (keycode == Input.Keys.A) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").addDirection(Input.Keys.LEFT);
+        } else if (keycode == Input.Keys.D) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").addDirection(Input.Keys.RIGHT);
         }
         return playersRegistry.getPlayer("FIRST_PLAYER").addDirection(keycode);
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.W) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").removeDirection(Input.Keys.UP);
+        } else if (keycode == Input.Keys.S) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").removeDirection(Input.Keys.DOWN);
+        } else if (keycode == Input.Keys.A) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").removeDirection(Input.Keys.LEFT);
+        } else if (keycode == Input.Keys.D) {
+            return playersRegistry.getPlayer("SECOND_PLAYER").removeDirection(Input.Keys.RIGHT);
+        }
         return playersRegistry.getPlayer("FIRST_PLAYER").removeDirection(keycode);
     }
 
