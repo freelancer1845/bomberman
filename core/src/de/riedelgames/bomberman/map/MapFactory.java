@@ -36,11 +36,6 @@ public class MapFactory {
      * 
      */
     public void createMap() {
-        // TODO : Move player creation outside
-        objectFactory.createPlayer(GameConstants.WORLD_WIDTH - 2, 1, "2");
-        objectFactory.createPlayer(1, GameConstants.WORLD_HEIGHT - 2, "1");
-        objectFactory.createPlayer((GameConstants.WORLD_WIDTH - 1) / 2 + 1,
-                (GameConstants.WORLD_HEIGHT - 1) / 2 + 1, "3");
 
         createWalls();
         createInnerGrid();

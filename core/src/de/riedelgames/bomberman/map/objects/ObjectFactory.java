@@ -57,16 +57,16 @@ public class ObjectFactory {
     /**
      * Creates a player object with a given id.
      */
-    public void createPlayer(int xGridPosition, int yGridPosition, String id) {
-        createPlayerObject(xGridPosition, yGridPosition, GameConstants.PLAYER_ID_PREFIX + id);
+    public Body createPlayer(int xGridPosition, int yGridPosition, String id) {
+        return createPlayerObject(xGridPosition, yGridPosition,
+                GameConstants.PLAYER_ID_PREFIX + id);
     }
 
     /**
      * Creates a Bomb that will explode after the given time.
      * 
-     * @param xGridPosition
-     * @param yGridPosition
-     * @param id
+     * @param xGridPosition of the bomb.
+     * @param yGridPosition of the bomb.
      * @param clock Time to explosion in ms.
      */
     public void createBomb(int xGridPosition, int yGridPosition, int clock) {
@@ -136,7 +136,7 @@ public class ObjectFactory {
 
     }
 
-    private void createPlayerObject(int xGridPosition, int yGridPosition, String id) {
+    private Body createPlayerObject(int xGridPosition, int yGridPosition, String id) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);
@@ -152,6 +152,7 @@ public class ObjectFactory {
 
         body.createFixture(fixtureDef);
         body.setUserData(id);
+        return body;
     }
 
 

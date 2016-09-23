@@ -2,7 +2,6 @@ package de.riedelgames.bomberman.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,13 +10,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.riedelgames.bomberman.GameConstants;
 import de.riedelgames.bomberman.map.MapFactory;
-import de.riedelgames.bomberman.map.objects.ObjectFactory;
+import de.riedelgames.bomberman.players.Player;
+import de.riedelgames.bomberman.players.PlayerException;
+import de.riedelgames.bomberman.players.PlayersRegistry;
 
 /**
  * The screen underlying the game.
@@ -42,6 +42,9 @@ public class GameScreen implements Screen, InputProcessor {
     /** Box2DRenderer. */
     private Box2DDebugRenderer b2dr;
 
+    /** The Player Registry. */
+    private PlayersRegistry playersRegistry;
+
     /** Constructor. */
     public GameScreen(Game game) {
         this.game = game;
@@ -58,26 +61,47 @@ public class GameScreen implements Screen, InputProcessor {
 
         world = new World(new Vector2(0, 0), true);
 
+        playersRegistry = PlayersRegistry.getInstance();
+        try {
+            playersRegistry.registerPlayer("FIRST_PLAYER");
+            playersRegistry.registerPlayer("SECOND_PLAYER");
+            playersRegistry.registerPlayer("THIRD_PLAYER");
+            playersRegistry.registerPlayer("FOURTH_PLAYER");
+            playersRegistry.placeRegisteredPlayersInWorld();
+        } catch (PlayerException e) {
+            System.out.println(e.getMessage());
+        }
+
+
 
         MapFactory.getInstance().createMap();
 
-        // ObjectFactory.getInstance().createSolidStack(0, 0, 1, 1);
-        // ObjectFactory.getInstance().createSolidStack(16,16,1,1);
-        // ObjectFactory.getInstance().createSolidStack(16,31,1,1);
-        // ObjectFactory.getInstance().createSolidStack(0, 0, 31, 31);
 
-        // for (int i = 0; i < GameConstants.WORLD_WIDTH; i++) {
-        // for (int j = 0; j < GameConstants.WORLD_HEIGHT; j++) {
-        // ObjectFactory.getInstance().createSolidBlock(i, j);
-        // }
-        // }
-
-        Gdx.app.log("mapfactory createmap", "called");
         b2dr = new Box2DDebugRenderer();
 
         Gdx.input.setInputProcessor(this);
 
 
+    }
+
+    private void updateMovement() {
+        for (Player player : playersRegistry.getPlayers()) {
+            Vector2 velocity = new Vector2(0, 0);
+            if (player.getMovement()[0]) {
+                velocity.y += GameConstants.STANDARD_VELOCITY;
+            }
+            if (player.getMovement()[1]) {
+                velocity.y -= GameConstants.STANDARD_VELOCITY;
+            }
+            if (player.getMovement()[2]) {
+                velocity.x -= GameConstants.STANDARD_VELOCITY;
+            }
+            if (player.getMovement()[3]) {
+                velocity.x += GameConstants.STANDARD_VELOCITY;
+            }
+            Body body = player.getBody();
+            body.setLinearVelocity(velocity);
+        }
     }
 
     @Override
@@ -90,6 +114,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        updateMovement();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // Gdx.app.log("render", "rendering");
@@ -133,47 +158,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        Array<Body> bodies = new Array<Body>();
-        world.getBodies(bodies);
-        Body playerBody = null;
-        for (Body body : bodies) {
-            if (((String) body.getUserData()).startsWith(GameConstants.PLAYER_ID_PREFIX)) {
-                playerBody = body;
-                break;
-            }
-        }
-        if (keycode == Input.Keys.UP) {
-            playerBody.setLinearVelocity(0, 1);
-        } else if (keycode == Input.Keys.DOWN) {
-            playerBody.setLinearVelocity(0, -1);
-        } else if (keycode == Input.Keys.RIGHT) {
-            playerBody.setLinearVelocity(1, 0);
-        } else if (keycode == Input.Keys.LEFT) {
-            playerBody.setLinearVelocity(-1, 0);
-        } else if (keycode == Input.Keys.SPACE) {
-            ObjectFactory.getInstance().createBomb(Math.round(playerBody.getPosition().x - 0.5f),
-                    Math.round(playerBody.getPosition().y - 0.5f), 1000);
-        }
-        return true;
+        return playersRegistry.getPlayer("FIRST_PLAYER").addDirection(keycode);
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        Array<Body> bodies = new Array<Body>();
-        world.getBodies(bodies);
-        Body playerBody = null;
-        for (Body body : bodies) {
-            if (((String) body.getUserData()).startsWith(GameConstants.PLAYER_ID_PREFIX)) {
-                playerBody = body;
-                break;
-            }
-        }
-        if (keycode == Input.Keys.UP) {
-            playerBody.linVelLoc.y = 0f;
-        } else if (keycode == Input.Keys.DOWN) {
-            playerBody.linVelLoc.y = 0f;
-        }
-        return true;
+        return playersRegistry.getPlayer("FIRST_PLAYER").removeDirection(keycode);
     }
 
     @Override

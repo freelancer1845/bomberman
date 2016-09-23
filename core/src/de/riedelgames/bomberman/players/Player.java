@@ -1,5 +1,8 @@
 package de.riedelgames.bomberman.players;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.physics.box2d.Body;
+
 /**
  * A player Object. For now it only has an ID (Usually provided by the network), movement direction
  * and information about its powerUps.
@@ -9,19 +12,9 @@ package de.riedelgames.bomberman.players;
  */
 public class Player {
 
-    /** Direction. */
-    public static final int UP = 0;
-
-    /** Direction. */
-    public static final int DOWN = 1;
-
-    /** Direction. */
-    public static final int LEFT = 2;
-
-    /** Direction. */
-    public static final int RIGHT = 3;
-
     private final String id;
+
+    private Body body;
 
     private boolean[] movement = new boolean[] {false, false, false, false};
 
@@ -35,12 +28,54 @@ public class Player {
         this.id = id;
     }
 
-    public void addDirection(int dir) {
-        movement[dir] = true;
+    /**
+     * Adds a movement direction.
+     * 
+     * @param dir of the direction from {@link Input.Keys}.
+     */
+    public boolean addDirection(int dir) {
+        switch (dir) {
+            case Input.Keys.UP:
+                movement[0] = true;
+                break;
+            case Input.Keys.DOWN:
+                movement[1] = true;
+                break;
+            case Input.Keys.LEFT:
+                movement[2] = true;
+                break;
+            case Input.Keys.RIGHT:
+                movement[3] = true;
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
-    public void removeDirection(int dir) {
-        movement[dir] = false;
+    /**
+     * Removes a movement direction.
+     * 
+     * @param dir of the direction from {@link Input.Keys}.
+     */
+    public boolean removeDirection(int dir) {
+        switch (dir) {
+            case Input.Keys.UP:
+                movement[0] = false;
+                break;
+            case Input.Keys.DOWN:
+                movement[1] = false;
+                break;
+            case Input.Keys.LEFT:
+                movement[2] = false;
+                break;
+            case Input.Keys.RIGHT:
+                movement[3] = false;
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     public boolean[] getMovement() {
@@ -93,6 +128,14 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
     }
 
 

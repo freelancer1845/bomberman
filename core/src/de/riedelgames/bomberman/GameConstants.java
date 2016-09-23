@@ -28,5 +28,8 @@ public class GameConstants {
     /** Percentage blocked with destructible blocks. */
     public static final float DESTRUCTIBLE_BLOCKS_PERCENTAGE = 0.5f;
 
+    /** Standard Velocity. */
+    public static final float STANDARD_VELOCITY = 5f;
+
     private GameConstants() {}
 }
