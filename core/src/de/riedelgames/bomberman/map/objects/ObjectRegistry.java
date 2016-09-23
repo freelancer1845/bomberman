@@ -33,7 +33,6 @@ public class ObjectRegistry {
             Vector2 position = bomb.getBody().getWorldCenter();
             if (Math.abs(position.x - 0.5f - xgridPosition) < 0.1f
                     && Math.abs(position.y - 0.5f - ygridPosition) < 0.1f) {
-                System.out.println("Bomb already placed here");
                 return true;
             }
         }

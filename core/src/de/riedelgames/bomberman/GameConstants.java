@@ -16,6 +16,12 @@ public class GameConstants {
     /** Bomb id. */
     public static final String BOMB_ID = "BombId";
 
+    /** Bomb count power up id. */
+    public static final String BOMB_COUNT_POWER_UP_ID = "BombCountPowerUpId";
+
+    /** Bomb range power up id. */
+    public static final String BOMB_RANGE_POWER_UP_ID = "BombRangePowerUpId";
+
 
     /** From here on the gameConstants are settings to be set. */
 

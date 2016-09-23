@@ -1,5 +1,8 @@
 package de.riedelgames.bomberman.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,6 +13,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -46,6 +53,9 @@ public class GameScreen implements Screen, InputProcessor {
     /** The Player Registry. */
     private PlayersRegistry playersRegistry;
 
+    /** Bodies scheduled to destroy. */
+    private List<Body> bodiesToDestroy = new ArrayList<Body>();
+
     /** Constructor. */
     public GameScreen(Game game) {
         this.game = game;
@@ -66,8 +76,8 @@ public class GameScreen implements Screen, InputProcessor {
         try {
             playersRegistry.registerPlayer("FIRST_PLAYER");
             playersRegistry.registerPlayer("SECOND_PLAYER");
-            playersRegistry.registerPlayer("THIRD_PLAYER");
-            playersRegistry.registerPlayer("FOURTH_PLAYER");
+            // playersRegistry.registerPlayer("THIRD_PLAYER");
+            // playersRegistry.registerPlayer("FOURTH_PLAYER");
             playersRegistry.placeRegisteredPlayersInWorld();
         } catch (PlayerException e) {
             System.out.println(e.getMessage());
@@ -87,6 +97,34 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void createWorld() {
         world = new World(new Vector2(0, 0), true);
+
+        world.setContactListener(new ContactListener() {
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beginContact(Contact contact) {
+                if (!handlePowerUps(contact)) {
+                    // Do other stuff
+                }
+            }
+        });
 
 
     }
@@ -111,6 +149,52 @@ public class GameScreen implements Screen, InputProcessor {
         }
     }
 
+    private void deleteBodiestoDestroy() {
+        for (Body body : bodiesToDestroy) {
+            world.destroyBody(body);
+        }
+        bodiesToDestroy.clear();
+    }
+
+    private boolean handlePowerUps(Contact contact) {
+        if (contact.getFixtureA().getBody().getUserData() != null
+                && contact.getFixtureB().getBody().getUserData() != null) {
+            if (((String) contact.getFixtureA().getBody().getUserData())
+                    .startsWith(GameConstants.PLAYER_ID_PREFIX)) {
+                if (contact.getFixtureB().getBody().getUserData()
+                        .equals(GameConstants.BOMB_COUNT_POWER_UP_ID)) {
+                    playersRegistry
+                            .getPlayer((String) contact.getFixtureA().getBody().getUserData())
+                            .increaseMaxBombs();
+                    bodiesToDestroy.add(contact.getFixtureB().getBody());
+                } else if (contact.getFixtureB().getBody().getUserData()
+                        .equals(GameConstants.BOMB_RANGE_POWER_UP_ID)) {
+                    playersRegistry
+                            .getPlayer((String) contact.getFixtureA().getBody().getUserData())
+                            .increaseBombRange();
+                    bodiesToDestroy.add(contact.getFixtureB().getBody());
+                }
+            } else if (((String) contact.getFixtureB().getBody().getUserData())
+                    .startsWith(GameConstants.PLAYER_ID_PREFIX)) {
+                if (contact.getFixtureA().getBody().getUserData()
+                        .equals(GameConstants.BOMB_COUNT_POWER_UP_ID)) {
+                    playersRegistry
+                            .getPlayer((String) contact.getFixtureB().getBody().getUserData())
+                            .increaseMaxBombs();
+                    bodiesToDestroy.add(contact.getFixtureB().getBody());
+                } else if (contact.getFixtureA().getBody().getUserData()
+                        .equals(GameConstants.BOMB_RANGE_POWER_UP_ID)) {
+                    playersRegistry
+                            .getPlayer((String) contact.getFixtureB().getBody().getUserData())
+                            .increaseBombRange();
+                    bodiesToDestroy.add(contact.getFixtureA().getBody());
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     @Override
     public void show() {
@@ -123,11 +207,14 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         updateMovement();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // Gdx.app.log("render", "rendering");
         b2dr.render(world, gamecam.combined);
         world.step(delta, 6, 2);
+
+        deleteBodiestoDestroy();
 
     }
 

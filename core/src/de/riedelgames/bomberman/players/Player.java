@@ -26,7 +26,7 @@ public class Player {
 
     private boolean[] movement = new boolean[] {false, false, false, false};
 
-    private int maxBombs = 3;
+    private int maxBombs = 1;
 
     private int bombRange = 1;
 
@@ -136,12 +136,20 @@ public class Player {
         this.maxBombs = maxBombs;
     }
 
+    public void increaseMaxBombs() {
+        this.maxBombs++;
+    }
+
     public int getBombRange() {
         return bombRange;
     }
 
     public void setBombRange(int bombRange) {
         this.bombRange = bombRange;
+    }
+
+    public void increaseBombRange() {
+        this.bombRange++;
     }
 
     @Override

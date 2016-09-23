@@ -98,6 +98,62 @@ public class ObjectFactory {
         return body;
     }
 
+    /**
+     * Creates a bomb count powerUp.
+     * 
+     * @param xGridPosition position
+     * @param yGridPosition position
+     * @return the {@link Body} object
+     */
+    public Body createBombCountPowerUp(int xGridPosition, int yGridPosition) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);
+
+        final Body body;
+        body = GameScreen.world.createBody(bodyDef);
+
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(0.4f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.isSensor = true;
+
+        body.createFixture(fixtureDef);
+        body.setUserData(GameConstants.BOMB_COUNT_POWER_UP_ID);
+
+        return body;
+    }
+
+    /**
+     * Creates a bomb range power up.
+     * 
+     * @param xGridPosition position
+     * @param yGridPosition position
+     * @return the {@link Body} object
+     */
+    public Body createBombRangePowerUp(int xGridPosition, int yGridPosition) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);
+
+        final Body body;
+        body = GameScreen.world.createBody(bodyDef);
+
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(0.3f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.isSensor = true;
+
+        body.createFixture(fixtureDef);
+        body.setUserData(GameConstants.BOMB_RANGE_POWER_UP_ID);
+
+        return body;
+    }
+
 
     /**
      * Returns the instance.

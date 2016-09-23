@@ -119,13 +119,13 @@ public class Bomb {
     }
 
     private void deployBombUpgrade(Vector2 position) {
-        createHitCircle(position.x, position.y);
-        // TODO : Implement Upgrade
+        ObjectFactory.getInstance().createBombCountPowerUp(Math.round(position.x - 0.5f),
+                Math.round(position.y - 0.5f));
     }
 
     private void deployRangeUpgrade(Vector2 position) {
-        createHitCircle(position.x, position.y);
-        // TODO : Implement Upgrade
+        ObjectFactory.getInstance().createBombRangePowerUp(Math.round(position.x - 0.5f),
+                Math.round(position.y - 0.5f));
     }
 
     private void destroyObjectsInExplosionRadius() {
@@ -146,7 +146,7 @@ public class Bomb {
                 @Override
                 public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal,
                         float fraction) {
-                    createHitCircle(point.x, point.y);
+                    // createHitCircle(point.x, point.y);
                     if (fixture.getUserData() instanceof Bomb) {
                         fractionObjectList.add(new FractionObject(fraction, fixture.getBody()));
                         // Don't stop at bombs since they may have a lower blast radius
@@ -161,10 +161,12 @@ public class Bomb {
                         // stop at blocks
                         return fraction;
                     } else if (fixture.getBody().getUserData() instanceof String
-                            && ((String) fixture.getBody().getUserData())
-                                    .startsWith(GameConstants.PLAYER_ID_PREFIX)) {
+                            && (((String) fixture.getBody().getUserData())
+                                    .startsWith(GameConstants.PLAYER_ID_PREFIX))
+                            || fixture.getBody().getUserData()
+                                    .equals(GameConstants.BOMB_COUNT_POWER_UP_ID)) {
                         fractionObjectList.add(new FractionObject(fraction, fixture.getBody()));
-                        // Go through players
+                        // Go through players and power ups
                         return -1;
                     }
                     return fraction;
@@ -202,6 +204,8 @@ public class Bomb {
                     break;
                 } else if (id.startsWith(GameConstants.PLAYER_ID_PREFIX)) {
                     playersRegistry.getPlayer(id).destroy();
+                } else if (id.equals(GameConstants.BOMB_COUNT_POWER_UP_ID)) {
+                    GameScreen.world.destroyBody(fractionObject.body);
                 } else if (id.equals(GameConstants.BOMB_ID)) {
                     ((Bomb) fractionObject.body.getFixtureList().get(0).getUserData()).explode();
                 }
