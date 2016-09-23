@@ -29,10 +29,10 @@ public class ObjectFactory {
      * 
      * @param xGridPosition position in Grid.
      * @param yGridPosition position in Grid.
-     * 
+     * @return {@link Body} the created body;
      */
-    public void createSolidBlock(int xGridPosition, int yGridPosition) {
-        createSolidStack(xGridPosition, yGridPosition, 1, 1);
+    public Body createSolidBlock(int xGridPosition, int yGridPosition) {
+        return createSolidStack(xGridPosition, yGridPosition, 1, 1);
     }
 
     /**
@@ -42,20 +42,25 @@ public class ObjectFactory {
      * @param yGridPosition position in Grid
      * @param xBlocks count
      * @param yBlocks count
+     * @return {@link Body} the created body;
      */
-    public void createSolidStack(int xGridPosition, int yGridPosition, int xBlocks, int yBlocks) {
-        createBlock(xGridPosition, yGridPosition, xBlocks, yBlocks, GameConstants.BLOCK_ID);
+    public Body createSolidStack(int xGridPosition, int yGridPosition, int xBlocks, int yBlocks) {
+        return createBlock(xGridPosition, yGridPosition, xBlocks, yBlocks, GameConstants.BLOCK_ID);
     }
 
     /**
      * Creates a destructible block in the world.
+     * 
+     * @return {@link Body} the created body;
      */
-    public void createDestructibleBlock(int xGridPosition, int yGridPosition) {
-        createBlock(xGridPosition, yGridPosition, 1, 1, GameConstants.DESTRUCTIBLE_BLOCK_ID);
+    public Body createDestructibleBlock(int xGridPosition, int yGridPosition) {
+        return createBlock(xGridPosition, yGridPosition, 1, 1, GameConstants.DESTRUCTIBLE_BLOCK_ID);
     }
 
     /**
      * Creates a player object with a given id.
+     * 
+     * @return {@link Body} the created body;
      */
     public Body createPlayer(int xGridPosition, int yGridPosition, String id) {
         return createPlayerObject(xGridPosition, yGridPosition,
@@ -68,8 +73,9 @@ public class ObjectFactory {
      * @param xGridPosition of the bomb.
      * @param yGridPosition of the bomb.
      * @param clock Time to explosion in ms.
+     * @return {@link Body} the created body;
      */
-    public void createBomb(int xGridPosition, int yGridPosition, int clock) {
+    public Body createBomb(int xGridPosition, int yGridPosition, int clock) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);
@@ -95,7 +101,7 @@ public class ObjectFactory {
             }
 
         }, clock / 1000.0f);
-
+        return body;
     }
 
 
@@ -112,7 +118,7 @@ public class ObjectFactory {
     }
 
 
-    private void createBlock(int xGridPosition, int yGridPosition, int xBlocks, int yBlocks,
+    private Body createBlock(int xGridPosition, int yGridPosition, int xBlocks, int yBlocks,
             String id) {
 
         BodyDef bodyDef = new BodyDef();
@@ -133,6 +139,7 @@ public class ObjectFactory {
         body.createFixture(fixtureDef);
         body.setUserData(id);
 
+        return body;
 
     }
 
