@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 
@@ -73,7 +72,6 @@ public class MapFactory {
             }
         }
 
-        Gdx.app.log("create inner grid ", "called");
 
     }
 
@@ -109,10 +107,7 @@ public class MapFactory {
             }
             objectFactory.createDestructibleBlock(posX, posY);
             usedFields.add(position);
-            System.out.println("Block Created: [" + posX + "] [" + posY + "]");
         }
-
-        Gdx.app.log("destructable blocks", " created");
 
     }
 

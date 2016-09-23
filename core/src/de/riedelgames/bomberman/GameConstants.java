@@ -26,13 +26,13 @@ public class GameConstants {
     /** From here on the gameConstants are settings to be set. */
 
     /** Game world width. */
-    public static final int WORLD_WIDTH = 17;
+    public static final int WORLD_WIDTH = 33;
 
     /** Game world height. */
-    public static final int WORLD_HEIGHT = 17;
+    public static final int WORLD_HEIGHT = 33;
 
     /** Percentage blocked with destructible blocks. */
-    public static final float DESTRUCTIBLE_BLOCKS_PERCENTAGE = 0.5f;
+    public static final float DESTRUCTIBLE_BLOCKS_PERCENTAGE = 0.4f;
 
     /** Standard Velocity. */
     public static final float STANDARD_VELOCITY = 5f;

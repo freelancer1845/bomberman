@@ -3,7 +3,6 @@ package de.riedelgames.bomberman.screens;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -23,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.riedelgames.bomberman.GameConstants;
 import de.riedelgames.bomberman.map.MapFactory;
+import de.riedelgames.bomberman.map.objects.ObjectRegistry;
 import de.riedelgames.bomberman.players.Player;
 import de.riedelgames.bomberman.players.PlayerException;
 import de.riedelgames.bomberman.players.PlayersRegistry;
@@ -38,8 +38,6 @@ public class GameScreen implements Screen, InputProcessor {
     /** The world the game exists in. */
     public static World world;
 
-    /** Reference to the game extending class. */
-    private final Game game;
 
     /** Top Cam. */
     private OrthographicCamera gamecam;
@@ -57,8 +55,7 @@ public class GameScreen implements Screen, InputProcessor {
     private List<Body> bodiesToDestroy = new ArrayList<Body>();
 
     /** Constructor. */
-    public GameScreen(Game game) {
-        this.game = game;
+    public GameScreen() {
 
         gamecam = new OrthographicCamera();
 
@@ -215,6 +212,9 @@ public class GameScreen implements Screen, InputProcessor {
         world.step(delta, 6, 2);
 
         deleteBodiestoDestroy();
+
+        // Create objects that should not be influenced by the timestep they are created in.
+        ObjectRegistry.getInstance().createObjectsInQueue();
 
     }
 
