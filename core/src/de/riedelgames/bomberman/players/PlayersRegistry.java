@@ -28,7 +28,7 @@ public class PlayersRegistry {
      * @throws PlayerException thrown if a player with this id is already registered.
      */
     public void registerPlayer(String id) throws PlayerException {
-        Player player = new Player(id);
+        Player player = new Player(GameConstants.PLAYER_ID_PREFIX + id);
         if (playerList.contains(player)) {
             throw new PlayerException();
         }
@@ -43,7 +43,7 @@ public class PlayersRegistry {
     public void removePlayer(String id) {
         Player playerToRemove = null;
         for (Player player : playerList) {
-            if (player.getId().equals(id)) {
+            if (player.getId().equals(GameConstants.PLAYER_ID_PREFIX + id)) {
                 playerToRemove = player;
                 break;
             }
@@ -60,12 +60,18 @@ public class PlayersRegistry {
      * @return {@link Player} object with this id or null.
      */
     public Player getPlayer(String id) {
+        String testId;
+        if (!id.startsWith(GameConstants.PLAYER_ID_PREFIX)) {
+            testId = GameConstants.PLAYER_ID_PREFIX + id;
+        } else {
+            testId = id;
+        }
         for (Player player : playerList) {
-            if (player.getId().equals(id)) {
+            if (player.getId().equals(testId)) {
                 return player;
             }
         }
-        return null;
+        throw new PlayerException("No player registered with id: " + id);
     }
 
     /**

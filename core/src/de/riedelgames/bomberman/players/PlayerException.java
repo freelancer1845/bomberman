@@ -6,7 +6,7 @@ package de.riedelgames.bomberman.players;
  * @author Jascha Riedel
  *
  */
-public class PlayerException extends Exception {
+public class PlayerException extends RuntimeException {
 
     /**
      * Serial Version UID.

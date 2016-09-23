@@ -31,5 +31,11 @@ public class GameConstants {
     /** Standard Velocity. */
     public static final float STANDARD_VELOCITY = 5f;
 
+    /** Bomb explosion timer in ms. */
+    public static final int BOMB_CLOCK = 2000;
+
+    /** Probability to drop an upgrade. */
+    public static final float UPGRADE_PERCENTAGE = 0.2f;
+
     private GameConstants() {}
 }

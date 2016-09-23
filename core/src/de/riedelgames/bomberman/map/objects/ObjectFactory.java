@@ -5,8 +5,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
 import de.riedelgames.bomberman.GameConstants;
 import de.riedelgames.bomberman.screens.GameScreen;
@@ -63,8 +61,13 @@ public class ObjectFactory {
      * @return {@link Body} the created body;
      */
     public Body createPlayer(int xGridPosition, int yGridPosition, String id) {
-        return createPlayerObject(xGridPosition, yGridPosition,
-                GameConstants.PLAYER_ID_PREFIX + id);
+        if (id.startsWith(GameConstants.PLAYER_ID_PREFIX)) {
+            return createPlayerObject(xGridPosition, yGridPosition, id);
+        } else {
+            return createPlayerObject(xGridPosition, yGridPosition,
+                    GameConstants.PLAYER_ID_PREFIX + id);
+        }
+
     }
 
     /**
@@ -72,10 +75,9 @@ public class ObjectFactory {
      * 
      * @param xGridPosition of the bomb.
      * @param yGridPosition of the bomb.
-     * @param clock Time to explosion in ms.
      * @return {@link Body} the created body;
      */
-    public Body createBomb(int xGridPosition, int yGridPosition, int clock) {
+    public Body createBomb(int xGridPosition, int yGridPosition) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);
@@ -84,7 +86,7 @@ public class ObjectFactory {
         body = GameScreen.world.createBody(bodyDef);
 
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(0.45f);
+        circleShape.setRadius(0.1f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
@@ -93,14 +95,6 @@ public class ObjectFactory {
         body.createFixture(fixtureDef);
         body.setUserData(GameConstants.BOMB_ID);
 
-        Timer.instance().scheduleTask(new Task() {
-
-            @Override
-            public void run() {
-                GameScreen.world.destroyBody(body);
-            }
-
-        }, clock / 1000.0f);
         return body;
     }
 
@@ -156,6 +150,8 @@ public class ObjectFactory {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = 0x0002;
+        fixtureDef.filter.maskBits = 0x0001;
 
         body.createFixture(fixtureDef);
         body.setUserData(id);

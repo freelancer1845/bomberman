@@ -2,6 +2,13 @@ package de.riedelgames.bomberman.players;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
+
+import de.riedelgames.bomberman.GameConstants;
+import de.riedelgames.bomberman.map.objects.Bomb;
+import de.riedelgames.bomberman.map.objects.ObjectFactory;
+import de.riedelgames.bomberman.screens.GameScreen;
 
 /**
  * A player Object. For now it only has an ID (Usually provided by the network), movement direction
@@ -76,6 +83,30 @@ public class Player {
                 return false;
         }
         return true;
+    }
+
+    public void plantBomb() {
+        new Bomb(Math.round(body.getPosition().x - 0.5f), Math.round(body.getPosition().y - 0.5f),
+                10, GameConstants.BOMB_CLOCK);
+    }
+
+    /**
+     * Destroys the player.
+     */
+    public void destroy() {
+        GameScreen.world.destroyBody(body);
+
+        // TODO : Destroy logic
+        Timer.schedule(new Task() {
+
+            @Override
+            public void run() {
+                body = ObjectFactory.getInstance().createPlayer(1, GameConstants.WORLD_HEIGHT - 2,
+                        "FIRST_PLAYER");
+            }
+
+        }, 0.5f);
+
     }
 
     public boolean[] getMovement() {

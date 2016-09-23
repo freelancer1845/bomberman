@@ -2,6 +2,7 @@ package de.riedelgames.bomberman.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -59,7 +60,7 @@ public class GameScreen implements Screen, InputProcessor {
         gamecam.position.set(GameConstants.WORLD_WIDTH / 2.0f, GameConstants.WORLD_HEIGHT / 2.0f,
                 0);
 
-        world = new World(new Vector2(0, 0), true);
+        createWorld();
 
         playersRegistry = PlayersRegistry.getInstance();
         try {
@@ -84,6 +85,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     }
 
+    private void createWorld() {
+        world = new World(new Vector2(0, 0), true);
+
+
+    }
+
     private void updateMovement() {
         for (Player player : playersRegistry.getPlayers()) {
             Vector2 velocity = new Vector2(0, 0);
@@ -103,6 +110,7 @@ public class GameScreen implements Screen, InputProcessor {
             body.setLinearVelocity(velocity);
         }
     }
+
 
     @Override
     public void show() {
@@ -158,6 +166,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.SPACE) {
+            playersRegistry.getPlayer("FIRST_PLAYER").plantBomb();
+        }
         return playersRegistry.getPlayer("FIRST_PLAYER").addDirection(keycode);
     }
 
