@@ -25,11 +25,14 @@ public class Bomb {
     /** Body of the bomb in the world. */
     private final Body body;
 
+
     private final int range;
 
     private boolean exploded = false;
 
     private PlayersRegistry playersRegistry;
+
+    private final String owner;
 
     /**
      * Creates a new bomb that explodes after the given time in ms with the given range.
@@ -39,10 +42,11 @@ public class Bomb {
      * @param range range in grid units
      * @param clock delay in ms
      */
-    public Bomb(int xGridPosition, int yGridPosition, int range, int clock) {
+    public Bomb(int xGridPosition, int yGridPosition, int range, int clock, String owner) {
         body = ObjectFactory.getInstance().createBomb(xGridPosition, yGridPosition);
         body.getFixtureList().get(0).setUserData(this);
         this.range = range;
+        this.owner = owner;
         Timer.instance().scheduleTask(new Task() {
 
             @Override
@@ -52,6 +56,7 @@ public class Bomb {
 
         }, clock / 1000.0f);
         playersRegistry = PlayersRegistry.getInstance();
+        ObjectRegistry.getInstance().addBomb(this);
     }
 
     /**
@@ -64,6 +69,7 @@ public class Bomb {
             destroyObjectsInExplosionRadius();
             destroyPlayerIfItIsOnTheBomb();
 
+            ObjectRegistry.getInstance().removeBomb(this);
             GameScreen.world.destroyBody(body);
         }
 
@@ -225,6 +231,14 @@ public class Bomb {
 
             }
         }
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public Body getBody() {
+        return body;
     }
 
     private class FractionObject {

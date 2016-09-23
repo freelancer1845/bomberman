@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 import de.riedelgames.bomberman.GameConstants;
 import de.riedelgames.bomberman.map.objects.Bomb;
 import de.riedelgames.bomberman.map.objects.ObjectFactory;
+import de.riedelgames.bomberman.map.objects.ObjectRegistry;
 import de.riedelgames.bomberman.screens.GameScreen;
 
 /**
@@ -25,7 +26,7 @@ public class Player {
 
     private boolean[] movement = new boolean[] {false, false, false, false};
 
-    private int maxBombs = 1;
+    private int maxBombs = 3;
 
     private int bombRange = 1;
 
@@ -85,9 +86,19 @@ public class Player {
         return true;
     }
 
+    /**
+     * Plants a bomb at the players location if he is allowed to do so (max bombs not reached +
+     * already bomb at location).
+     */
     public void plantBomb() {
-        new Bomb(Math.round(body.getPosition().x - 0.5f), Math.round(body.getPosition().y - 0.5f),
-                10, GameConstants.BOMB_CLOCK);
+        if (!ObjectRegistry.getInstance().isBombAtLocation(Math.round(body.getPosition().x - 0.5f),
+                Math.round(body.getPosition().y - 0.5f))) {
+            if (ObjectRegistry.getInstance().playerHasBombsLeft(this)) {
+                new Bomb(Math.round(body.getPosition().x - 0.5f),
+                        Math.round(body.getPosition().y - 0.5f), bombRange,
+                        GameConstants.BOMB_CLOCK, id);
+            }
+        }
     }
 
     /**
