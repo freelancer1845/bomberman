@@ -3,6 +3,7 @@ package de.riedelgames.bomberman;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.riedelgames.bomberman.screens.GameScreen;
 import de.riedelgames.bomberman.screens.SettingsScreen;
@@ -11,6 +12,7 @@ import de.riedelgames.bomberman.screens.StartScreen;
 public class InitialScreen extends Game {
 
 
+    public static SpriteBatch batch;
 
     /** List containing all the screens. */
     private Screen[] screenArray = new Screen[3];
@@ -20,17 +22,22 @@ public class InitialScreen extends Game {
     @Override
     public void create() {
 
+        batch = new SpriteBatch();
         this.startGame();
+
 
     }
 
     @Override
     public void render() {
         super.render();
+
     }
 
     @Override
     public void dispose() {
+
+
 
     }
 

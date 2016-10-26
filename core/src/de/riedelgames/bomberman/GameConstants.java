@@ -7,7 +7,7 @@ public class GameConstants {
     /** Solid block identifier. */
     public static final String BLOCK_ID = "SolidBlock";
 
-    /** Destructible block. */
+    /** Destructable block. */
     public static final String DESTRUCTIBLE_BLOCK_ID = "DesctructableBlock";
 
     /** Player id prefix. */

@@ -1,0 +1,138 @@
+
+texture.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+SolidBlock
+  rotate: false
+  xy: 1, 22
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+DestructableBlock
+  rotate: false
+  xy: 103, 22
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+player1death3
+  rotate: false
+  xy: 1, 1
+  size: 16, 19
+  orig: 16, 19
+  offset: 0, 0
+  index: -1
+player1death1
+  rotate: false
+  xy: 205, 103
+  size: 16, 19
+  orig: 16, 19
+  offset: 0, 0
+  index: -1
+player1death4
+  rotate: false
+  xy: 19, 1
+  size: 16, 19
+  orig: 16, 19
+  offset: 0, 0
+  index: -1
+player1death2
+  rotate: false
+  xy: 205, 82
+  size: 16, 19
+  orig: 16, 19
+  offset: 0, 0
+  index: -1
+player1walkingside1
+  rotate: false
+  xy: 223, 103
+  size: 15, 19
+  orig: 15, 19
+  offset: 0, 0
+  index: -1
+player1frontwalkingright
+  rotate: false
+  xy: 240, 103
+  size: 15, 19
+  orig: 15, 19
+  offset: 0, 0
+  index: -1
+player1death5
+  rotate: false
+  xy: 37, 2
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+player1backwalkingright
+  rotate: false
+  xy: 205, 61
+  size: 15, 19
+  orig: 15, 19
+  offset: 0, 0
+  index: -1
+player1frontwalkingleft
+  rotate: false
+  xy: 223, 82
+  size: 15, 19
+  orig: 15, 19
+  offset: 0, 0
+  index: -1
+player1walkingside2
+  rotate: false
+  xy: 240, 82
+  size: 15, 19
+  orig: 15, 19
+  offset: 0, 0
+  index: -1
+player1backwalkingleft
+  rotate: false
+  xy: 205, 40
+  size: 15, 19
+  orig: 15, 19
+  offset: 0, 0
+  index: -1
+player1death6
+  rotate: false
+  xy: 55, 3
+  size: 16, 17
+  orig: 16, 17
+  offset: 0, 0
+  index: -1
+player1back
+  rotate: false
+  xy: 222, 61
+  size: 14, 19
+  orig: 14, 19
+  offset: 0, 0
+  index: -1
+player1death7
+  rotate: false
+  xy: 238, 64
+  size: 17, 16
+  orig: 17, 16
+  offset: 0, 0
+  index: -1
+player1standingside
+  rotate: false
+  xy: 222, 40
+  size: 14, 19
+  orig: 14, 19
+  offset: 0, 0
+  index: -1
+player1front
+  rotate: false
+  xy: 238, 43
+  size: 14, 19
+  orig: 14, 19
+  offset: 0, 0
+  index: -1
+player1death8
+  rotate: false
+  xy: 205, 22
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

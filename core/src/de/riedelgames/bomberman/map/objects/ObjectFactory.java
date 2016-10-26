@@ -173,6 +173,7 @@ public class ObjectFactory {
     }
 
     private Body createPlayerObject(int xGridPosition, int yGridPosition, String id) {
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(xGridPosition + 0.5f, yGridPosition + 0.5f);

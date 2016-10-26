@@ -20,6 +20,7 @@ import de.riedelgames.bomberman.screens.GameScreen;
  */
 public class Player {
 
+
     private final String id;
 
     private Body body;
@@ -34,7 +35,9 @@ public class Player {
 
     public Player(String id) {
         this.id = id;
+
     }
+
 
     /**
      * Adds a movement direction.

@@ -9,6 +9,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -26,6 +27,10 @@ import de.riedelgames.bomberman.map.objects.ObjectRegistry;
 import de.riedelgames.bomberman.players.Player;
 import de.riedelgames.bomberman.players.PlayerException;
 import de.riedelgames.bomberman.players.PlayersRegistry;
+import de.riedelgames.bomberman.renderer.AssetLoader;
+import de.riedelgames.bomberman.renderer.BlockTextures;
+import de.riedelgames.bomberman.renderer.PlayerTextures;
+import de.riedelgames.bomberman.renderer.Renderer;
 
 /**
  * The screen underlying the game.
@@ -35,9 +40,13 @@ import de.riedelgames.bomberman.players.PlayersRegistry;
  */
 public class GameScreen implements Screen, InputProcessor {
 
+
+    private static SpriteBatch spriteBatch;
+
     /** The world the game exists in. */
     public static World world;
 
+    public Renderer renderer;
 
     /** Top Cam. */
     private OrthographicCamera gamecam;
@@ -54,8 +63,12 @@ public class GameScreen implements Screen, InputProcessor {
     /** Bodies scheduled to destroy. */
     private List<Body> bodiesToDestroy = new ArrayList<Body>();
 
+
+    private AssetLoader assetLoader = new AssetLoader();
+
     /** Constructor. */
     public GameScreen() {
+        spriteBatch = new SpriteBatch();
 
         gamecam = new OrthographicCamera();
 
@@ -81,6 +94,7 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
 
+        renderer = new Renderer(world);
 
         MapFactory.getInstance().createMap();
 
@@ -143,6 +157,8 @@ public class GameScreen implements Screen, InputProcessor {
             }
             Body body = player.getBody();
             body.setLinearVelocity(velocity);
+
+
         }
     }
 
@@ -203,7 +219,15 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+
         updateMovement();
+        for (PlayerTextures playerTextures : renderer.getPlayerTexturesList()) {
+
+            playerTextures.setPosition(playerTextures.getBody().getPosition().x - 0.5f,
+                    playerTextures.getBody().getPosition().y - 0.5f);
+
+        }
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -211,11 +235,24 @@ public class GameScreen implements Screen, InputProcessor {
         b2dr.render(world, gamecam.combined);
         world.step(delta, 6, 2);
 
+        spriteBatch.setProjectionMatrix(gamecam.combined);
+        spriteBatch.begin();
+        renderer.render();
+        spriteBatch.end();
+
         deleteBodiestoDestroy();
 
         // Create objects that should not be influenced by the timestep they are created in.
         ObjectRegistry.getInstance().createObjectsInQueue();
 
+    }
+
+    public void renderBlock(BlockTextures blockTexture) {
+        blockTexture.draw(spriteBatch);
+    }
+
+    public void renderPlayer(PlayerTextures playerTexture) {
+        playerTexture.draw(spriteBatch);
     }
 
     @Override
@@ -319,6 +356,14 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    public static SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+    public void setSpriteBatch(SpriteBatch spriteBatch) {
+        this.spriteBatch = spriteBatch;
     }
 
 
